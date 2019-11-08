@@ -1,15 +1,14 @@
 # WooCommerce Sample
-=====================
 
-Contributors: twobyte, isikom, zauker
-Tags: ecommerce, e-commerce, commerce, woothemes, wordpress ecommerce, woocommerce, sample, free sample
-Requires at least: 3.5
-Tested up to: 4.6
-Stable tag: 0.9.0
-License: GPLv2
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Contributors: twobyte, isikom, zauker 
+Tags: ecommerce, e-commerce, commerce, woothemes, wordpress ecommerce, woocommerce, sample, free sample 
+Requires at least: 3.5 
+Tested up to: 4.6 
+Stable tag: 0.9.0 
+License: GPLv2 
+License URI: http://www.gnu.org/licenses/gpl-2.0.html 
 
-Manage Samples Of Your Products 
+Manage Samples Of Your Products  
 
 ## Description
 
