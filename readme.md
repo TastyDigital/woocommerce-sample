@@ -22,7 +22,7 @@ Compatibility with plugins:
 
 ## GET INVOLVED
 
-Developers can checkout and contribute to the source code on the [GitHub Repository](https://github.com/TastyDigital/woocommerce-sample), this has been forked from [isikom’s original repository](https://github.com/isikom/woocommerce-sample).
+Developers can checkout and contribute to the source code on the [GitHub Repository](https://github.com/TastyDigital/woocommerce-sample), this has been forked from [isikom’s original repository](https://github.com/isikom/woocommerce-sample) which at this point hasn’t been updated since 2016.
 
 ## Installation
 
