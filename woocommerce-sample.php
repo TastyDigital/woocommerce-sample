@@ -82,7 +82,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 			$main_is_sample = $cart[$cart_item_key]['sample'];
 			if ($main_is_sample) {
 				$main_product_id = $cart[$cart_item_key]['product_id'];
-				if ( !get_post_meta($main_product_id, 'sample_chained_enambled', true) ) {
+				if ( !get_post_meta($main_product_id, 'sample_chained_enabled', true) ) {
 					foreach ($cart as $cart_key => $cart_item) {
 						if ($cart_item['product_id'] == $chained_parent_id) {
 							$woocommerce->cart->remove_cart_item($cart_key);
@@ -291,9 +291,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 			} else {
 				$has_chained_products = false;
 			}
-			$sample_chained_enambled = get_post_meta($post->ID, 'sample_chained_enambled', true) ? get_post_meta($post->ID, 'sample_chained_enambled', true) : false;
+			$sample_chained_enabled = get_post_meta($post->ID, 'sample_chained_enabled', true) ? get_post_meta($post->ID, 'sample_chained_enabled', true) : false;
 			$sample_shipping_mode = get_post_meta($post->ID, 'sample_shipping_mode', true) ? get_post_meta($post->ID, 'sample_shipping_mode', true) : 'default';
-			$sample_shipping = get_post_meta($post->ID, 'sample_shiping', true) ? get_post_meta($post->ID, 'sample_shipping', true) : 0;
+			$sample_shipping = get_post_meta($post->ID, 'sample_shipping', true) ? get_post_meta($post->ID, 'sample_shipping', true) : 0;
 			$sample_price_mode = get_post_meta($post->ID, 'sample_price_mode', true) ? get_post_meta($post->ID, 'sample_price_mode', true) : 'default';
 			$sample_price = get_post_meta($post->ID, 'sample_price', true) ? get_post_meta($post->ID, 'sample_price', true) : 0;
 			?>
@@ -303,9 +303,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 					<input type="checkbox" class="checkbox" name="sample_enable" id="sample_enable" value="yes" <?php echo $sample_enable ? 'checked="checked"' : ''; ?>> <span class="description"><?php _e('Enable or disable sample option for this item.', 'woosample'); ?></span>
 				</p>
 			<?php if ($has_chained_products) { ?>
-				<p class="form-field sample_chained_enambled_field ">
-					<label for="sample_chained_enambled"><?php _e('Add chained products', 'woosample');?></label>
-					<input type="checkbox" class="checkbox" name="sample_chained_enambled" id="sample_chained_enambled" value="yes" <?php echo $sample_chained_enambled ? 'checked="checked"' : ''; ?>> <span class="description"><?php _e('Add or not chained products as sample.', 'woosample'); ?></span>
+				<p class="form-field sample_chained_enabled_field ">
+					<label for="sample_chained_enabled"><?php _e('Add chained products', 'woosample');?></label>
+					<input type="checkbox" class="checkbox" name="sample_chained_enabled" id="sample_chained_enabled" value="yes" <?php echo $sample_chained_enabled ? 'checked="checked"' : ''; ?>> <span class="description"><?php _e('Add or not chained products as sample.', 'woosample'); ?></span>
 				</p>
 			<?php } ?>
 				<legend><?php _e('Sample Shipping', 'woosample'); ?></legend>
@@ -364,11 +364,11 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         }else{
           update_post_meta($post_id, 'sample_enable', true);
         }
-        $sample_chained_enambled = $_POST['sample_chained_enambled'];
-        if (empty($sample_chained_enambled)) {
-          delete_post_meta($post_id, 'sample_chained_enambled');
+        $sample_chained_enabled = $_POST['sample_chained_enabled'];
+        if (empty($sample_chained_enabled)) {
+          delete_post_meta($post_id, 'sample_chained_enabled');
         }else{
-          update_post_meta($post_id, 'sample_chained_enambled', true);
+          update_post_meta($post_id, 'sample_chained_enabled', true);
         }		
 		$sample_price_mode = $_POST['sample_price_mode'];
         update_post_meta($post_id, 'sample_price_mode', $sample_price_mode);
@@ -389,8 +389,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 				<form action="<?php echo esc_url( $product->add_to_cart_url() ); ?>" class="cart sample" method="post" enctype='multipart/form-data'>
 				<?php do_action('woocommerce_before_add_sample_to_cart_button'); ?>
 					<div class="single_variation_wrap" style="">
-					<?php $btnclass = apply_filters('sample_button_class', "single_add_to_cart_button button alt single_add_sample_to_cart_button btn btn-default"); ?>
-	      	      	<button type="submit" class="<?php echo $btnclass; ?>"><?php echo  __( 'Add Sample to cart', 'woosample' ); ?></button>
+					<?php $btnclass = apply_filters('sample_button_class', "single_add_to_cart_button button single_add_sample_to_cart_button btn btn-default"); ?>
+	      	      	<button type="submit" class="<?php echo $btnclass; ?>"><?php echo  __( 'Order Sample', 'woosample' ); ?></button>
 	      	        <input type="hidden" name="sample" id="sample" value="true"/>
 	      	        <input type="hidden" name="add-to-cart" id="sample_add_to_cart" value="<?php echo $product->get_id(); ?>">
 	      	        </div>
