@@ -1,4 +1,6 @@
-=== WooCommerce Sample ===
+# WooCommerce Sample
+=====================
+
 Contributors: twobyte, isikom, zauker
 Tags: ecommerce, e-commerce, commerce, woothemes, wordpress ecommerce, woocommerce, sample, free sample
 Requires at least: 3.5
@@ -9,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Manage Samples Of Your Products 
 
-== Description ==
+## Description
 
 Plugin for Wordpress woocommerce that allow add to cart sample item of a certain products
 
@@ -19,19 +21,19 @@ Compatibility with plugins:
 * Min/Max Quantities
 * Measurement Price Calculator
 
-= GET INVOLVED =
+## GET INVOLVED
 
 Developers can checkout and contribute to the source code on the [GitHub Repository](https://github.com/TastyDigital/woocommerce-sample), this has been forked from [isikom’s original repository](https://github.com/isikom/woocommerce-sample).
 
-== Installation ==
+## Installation
 
-= Automatic installation =
+### Automatic installation
 
 Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t even need to leave your web browser. To do an automatic install of WooCommerce, log in to your WordPress admin panel, navigate to the Plugins menu and click Add New.
 
 In the search field type “WooCommerce Sample” and click Search Plugins. Once you’ve found our plugin you can view details about it such as the the point release, rating and description. Most importantly of course, you can install it by simply clicking Install Now. After clicking that link you will be asked if you’re sure you want to install the plugin. Click yes and WordPress will automatically complete the installation.
 
-= Manual installation =
+### Manual installation
 
 The manual installation method involves downloading our plugin and uploading it to your webserver via your favourite FTP application.
 
@@ -39,23 +41,23 @@ The manual installation method involves downloading our plugin and uploading it 
 2. Using an FTP program, or your hosting control panel, upload the unzipped plugin folder to your WordPress installation’s wp-content/plugins/ directory.
 3. Activate the plugin from the Plugins menu within the WordPress admin.
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions
 
-= Free shipping doesn't work =
+### Free shipping doesn't work 
 
 The "free shipping" option on Sample back end panel need that "free shipping" methods is enabled for your on your WooCommerce installation.
 You could enable it on WooCommerce -> Settings -> Shipping -> Shipping Zone -> Free Shipping.
 Make it enabled and set it available for coupon.
 (as you can see on screenshot tab)
 
-== Screenshots ==
+## Screenshots
 
 1. Front end - "Add Sample" button
 2. Back end - Sample setting on product page
 3. remember to enable WooCommerce Free Shipping to use it on WooCommerce Sample Plugins
 4. remember to set Free Shipping available for coupon
 
-== Changelog ==
+## Changelog
 
 = 0.9.0 - 08/10/2019 =
 * Fixed deprecated calls and methods
