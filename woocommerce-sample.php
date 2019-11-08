@@ -185,7 +185,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
       }
       
       function cart_title($title, $values, $cart_item_key){
-      	      if ($values['sample']){
+      	      if (isset($values['sample'])){
       	      	      $title .= ' [' . __('Sample','woosample') . '] ';
       	      }
       	      return $title;
@@ -199,7 +199,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 	  }
 
             function filter_session($cart_content, $value, $key){
-                if ($value['sample']){
+                if (isset($value['sample'])){
                     $cart_content['sample'] = true;
                     $cart_content['unique_key'] = $value['unique_key'];
                     //$cart_content['data']->set_price('0');
@@ -277,7 +277,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
        * creates the tab for the administrator, where administered product sample.
        */
       public function product_write_panel_tab() {
-        echo "<li><a class='added_sample' href=\"#sample_tab\">" . __('Sample','woosample') . "</a></li>";
+        echo "<li><a class='added_sample' href=\"#sample_tab\"><span>" . __('Sample','woosample') . "</span></a></li>";
       }
 
 		/**
@@ -392,7 +392,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 					<?php $btnclass = apply_filters('sample_button_class', "single_add_to_cart_button button alt single_add_sample_to_cart_button btn btn-default"); ?>
 	      	      	<button type="submit" class="<?php echo $btnclass; ?>"><?php echo  __( 'Add Sample to cart', 'woosample' ); ?></button>
 	      	        <input type="hidden" name="sample" id="sample" value="true"/>
-	      	        <input type="hidden" name="add-to-cart" id="sample_add_to_cart" value="<?php echo $product->id; ?>">
+	      	        <input type="hidden" name="add-to-cart" id="sample_add_to_cart" value="<?php echo $product->get_id(); ?>">
 	      	        </div>
 				<?php do_action('woocommerce_after_add_sample_to_cart_button'); ?>
 				</form>
