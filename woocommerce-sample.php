@@ -34,8 +34,11 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 	        add_action('woocommerce_product_data_panels', array($this, 'product_write_panel'));
 	        add_action('woocommerce_process_product_meta', array($this, 'product_save_data'), 10, 2);
 	        // frontend stuff
-	        add_action('woocommerce_after_add_to_cart_form', array($this, 'product_sample_button'));      
-			add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+            // Do we have this connected to Add to cart form? Makes it dependant on product being In Stock...
+	        //add_action('woocommerce_single_product_summary', array($this, 'product_sample_button'), 13);
+            add_action('woocommerce_after_add_to_cart_form', array($this, 'product_sample_button'));
+
+            add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
 			//add_action('woocommerce_add_to_cart', $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data );
 			//do_action( 'woocommerce_add_to_cart', $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data );
 			// Prevent add to cart
@@ -177,7 +180,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
       	      if ( sizeof( $woocommerce->cart->get_cart() ) > 0 ) {
       	      	      $cart_items = $woocommerce->cart->get_cart();
       	      	      $cart_item =$cart_items[$cart_item_key];
-      	      	      if ($cart_item['sample']){
+      	      	      if (!empty($cart_item['sample'])){
       	      	      	      $product_quantity = sprintf( '1 <input type="hidden" name="cart[%s][qty]" value="1" />', $cart_item_key );
       	      	      }
       	      }			
@@ -185,21 +188,21 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
       }
       
       function cart_title($title, $values, $cart_item_key){
-      	      if (isset($values['sample'])){
+      	      if (!empty($values['sample'])){
       	      	      $title .= ' [' . __('Sample','woosample') . '] ';
       	      }
       	      return $title;
       }
 	  
       function cart_widget_product_title($title, $cart_item){
-			if (is_array($cart_item) && $cart_item['sample']){
+			if (is_array($cart_item) && !empty($cart_item['sample'])){
 				$title .= ' [' . __('Sample','woosample') . '] ';
 			}
 			return $title;
 	  }
 
             function filter_session($cart_content, $value, $key){
-                if (isset($value['sample'])){
+                if (!empty($value['sample'])){
                     $cart_content['sample'] = true;
                     $cart_content['unique_key'] = $value['unique_key'];
                     //$cart_content['data']->set_price('0');
@@ -223,7 +226,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             }
 
             function add_sample_to_cart_item_data ($cart_item_data, $product_id, $variation_id){
-                if (get_post_meta($product_id, 'sample_enable') && $_REQUEST['sample']){
+                if (get_post_meta($product_id, 'sample_enable') && !empty($_REQUEST['sample'])){
                     $cart_item_data['sample'] = true;
                     $cart_item_data['unique_key'] = md5($product_id . 'sample');
                 }
@@ -231,7 +234,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             }
 
             function add_sample_to_cart_item ($cart_item, $cart_item_key){
-                if ($cart_item['sample'] === true){
+                if (!empty($cart_item['sample']) && $cart_item['sample'] === true){
                     $cart_item['data']->set_price('0');
                 }
                 return $cart_item;
@@ -388,12 +391,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 				<?php do_action('woocommerce_before_add_sample_to_cart_form'); ?>
 				<form action="<?php echo esc_url( $product->add_to_cart_url() ); ?>" class="cart sample" method="post" enctype='multipart/form-data'>
 				<?php do_action('woocommerce_before_add_sample_to_cart_button'); ?>
-					<div class="single_variation_wrap" style="">
 					<?php $btnclass = apply_filters('sample_button_class', "single_add_to_cart_button button single_add_sample_to_cart_button btn btn-default"); ?>
 	      	      	<button type="submit" class="<?php echo $btnclass; ?>"><?php echo  __( 'Order Sample', 'woosample' ); ?></button>
 	      	        <input type="hidden" name="sample" id="sample" value="true"/>
 	      	        <input type="hidden" name="add-to-cart" id="sample_add_to_cart" value="<?php echo $product->get_id(); ?>">
-	      	        </div>
 				<?php do_action('woocommerce_after_add_sample_to_cart_button'); ?>
 				</form>
 				<?php do_action('woocommerce_after_add_sample_to_cart_form'); ?>
