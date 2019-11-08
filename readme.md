@@ -59,7 +59,7 @@ Make it enabled and set it available for coupon.
 ## Changelog
 
 = 0.9.0 - 08/10/2019 =
-* Fixed deprecated calls and methods
+* Original repository forked and fixed deprecated calls and methods
 
 = 0.8.0 - 05/08/2016 =
 * added support for WooCommerce Chained Products plugin
