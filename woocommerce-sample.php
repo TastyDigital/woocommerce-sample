@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: WooCommerce Sample
- * Plugin URI: http://www.isikom.net/
- * Description: Include Get Sample Button in products of your online store.
+ * Plugin URI: https://github.com/TastyDigital/woocommerce-sample
+ * Description: Include Get Sample Button in products of your online store. This is a fork of an abandoned plugin
  * Author: Michele Menciassi
  * Author URI: https://plus.google.com/+MicheleMenciassi
- * Version: 0.8.0
+ * Version: 0.9.0
  * License: GPLv2 or later
  */
  
@@ -31,7 +31,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 		public function init() {
 	        // backend stuff
 	        add_action('woocommerce_product_write_panel_tabs', array($this, 'product_write_panel_tab'));
-	        add_action('woocommerce_product_write_panels', array($this, 'product_write_panel'));
+	        add_action('woocommerce_product_data_panels', array($this, 'product_write_panel'));
 	        add_action('woocommerce_process_product_meta', array($this, 'product_save_data'), 10, 2);
 	        // frontend stuff
 	        add_action('woocommerce_after_add_to_cart_form', array($this, 'product_sample_button'));      
@@ -96,7 +96,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 		function measurement_price_calculator_add_to_cart_validation ($valid, $product_id, $quantity, $measurements){
 			global $woocommerce;
 			$validation = $valid;
-			if (get_post_meta($product_id, 'sample_enamble') && $_REQUEST['sample']){
+			if (get_post_meta($product_id, 'sample_enable') && $_REQUEST['sample']){
 				$woocommerce->session->set( 'wc_notices', null );
 				$validation = true;
 			}
@@ -197,45 +197,45 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 			}
 			return $title;
 	  }
-      
-      function filter_session($cart_content, $value, $key){
-      	      if ($value['sample']){
-      	      	      $cart_content['sample'] = true;
-      	      	      $cart_content['unique_key'] = $value['unique_key'];
-      	      	      //$cart_content['data']->price = 0;
-					  $product_id = $cart_content['product_id'];
-					  $sample_price_mode = get_post_meta($product_id, 'sample_price_mode', true) ? get_post_meta($product_id, 'sample_price_mode', true) : 'default';
-					  $sample_price = get_post_meta($product_id, 'sample_price', true) ? get_post_meta($product_id, 'sample_price', true) : 0;
-					  if ($sample_price_mode === 'custom'){
-					  	$cart_content['data']->price = $sample_price;
-					  }else if ($sample_price_mode === 'free'){
-					  	$cart_content['data']->price = 0;
-					  }else{
-					  	//default
-					  }
-      	      }
-      	      return $cart_content;
-      }
-      
-      function get_item_data($item_data, $cart_item){
-      	      global $cart_item_key;
-      	      return $item_data;
-      }
-      
-      function add_sample_to_cart_item_data ($cart_item_data, $product_id, $variation_id){
-      	      if (get_post_meta($product_id, 'sample_enamble') && $_REQUEST['sample']){
-					$cart_item_data['sample'] = true;
-					$cart_item_data['unique_key'] = md5($product_id . 'sample');
-      	      }
-      	      return $cart_item_data;
-      }
 
-	function add_sample_to_cart_item ($cart_item, $cart_item_key){
-		if ($cart_item['sample'] === true){
-			$cart_item['data']->price = 0;
-		}
-		return $cart_item;
-	}
+            function filter_session($cart_content, $value, $key){
+                if ($value['sample']){
+                    $cart_content['sample'] = true;
+                    $cart_content['unique_key'] = $value['unique_key'];
+                    //$cart_content['data']->set_price('0');
+                    $product_id = $cart_content['product_id'];
+                    $sample_price_mode = get_post_meta($product_id, 'sample_price_mode', true) ? get_post_meta($product_id, 'sample_price_mode', true) : 'default';
+                    $sample_price = get_post_meta($product_id, 'sample_price', true) ? get_post_meta($product_id, 'sample_price', true) : 0;
+                    if ($sample_price_mode === 'custom'){
+                        $cart_content['data']->set_price( $sample_price );
+                    }else if ($sample_price_mode === 'free'){
+                        $cart_content['data']->set_price('0');
+                    }else{
+                        //default
+                    }
+                }
+                return $cart_content;
+            }
+
+            function get_item_data($item_data, $cart_item){
+                global $cart_item_key;
+                return $item_data;
+            }
+
+            function add_sample_to_cart_item_data ($cart_item_data, $product_id, $variation_id){
+                if (get_post_meta($product_id, 'sample_enable') && $_REQUEST['sample']){
+                    $cart_item_data['sample'] = true;
+                    $cart_item_data['unique_key'] = md5($product_id . 'sample');
+                }
+                return $cart_item_data;
+            }
+
+            function add_sample_to_cart_item ($cart_item, $cart_item_key){
+                if ($cart_item['sample'] === true){
+                    $cart_item['data']->set_price('0');
+                }
+                return $cart_item;
+            }
 	  
       /**
        * add_to_cart_validation function.
@@ -285,7 +285,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 		 */
 		public function product_write_panel() {
         	global $post;
-			$sample_enable = get_post_meta($post->ID, 'sample_enamble', true) ? get_post_meta($post->ID, 'sample_enamble', true) : false;
+			$sample_enable = get_post_meta($post->ID, 'sample_enable', true) ? get_post_meta($post->ID, 'sample_enable', true) : false;
 			if (in_array('woocommerce-chained-products/woocommerce-chained-products.php', apply_filters('active_plugins', get_option('active_plugins')))) {
 				$has_chained_products = get_post_meta($post->ID, '_chained_product_detail', true );
 			} else {
@@ -298,9 +298,9 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 			$sample_price = get_post_meta($post->ID, 'sample_price', true) ? get_post_meta($post->ID, 'sample_price', true) : 0;
 			?>
 			<div id="sample_tab" class="panel woocommerce_options_panel">
-				<p class="form-field sample_enamble_field ">
-					<label for="sample_enamble"><?php _e('Enable sample', 'woosample');?></label>
-					<input type="checkbox" class="checkbox" name="sample_enamble" id="sample_enamble" value="yes" <?php echo $sample_enable ? 'checked="checked"' : ''; ?>> <span class="description"><?php _e('Enable or disable sample option for this item.', 'woosample'); ?></span>
+				<p class="form-field sample_enable_field ">
+					<label for="sample_enable"><?php _e('Enable sample', 'woosample');?></label>
+					<input type="checkbox" class="checkbox" name="sample_enable" id="sample_enable" value="yes" <?php echo $sample_enable ? 'checked="checked"' : ''; ?>> <span class="description"><?php _e('Enable or disable sample option for this item.', 'woosample'); ?></span>
 				</p>
 			<?php if ($has_chained_products) { ?>
 				<p class="form-field sample_chained_enambled_field ">
@@ -358,11 +358,11 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
        */
       public function product_save_data($post_id, $post) {
 
-        $sample_enamble = $_POST['sample_enamble'];
-        if (empty($sample_enamble)) {
-          delete_post_meta($post_id, 'sample_enamble');
+        $sample_enable = $_POST['sample_enable'];
+        if (empty($sample_enable)) {
+          delete_post_meta($post_id, 'sample_enable');
         }else{
-          update_post_meta($post_id, 'sample_enamble', true);
+          update_post_meta($post_id, 'sample_enable', true);
         }
         $sample_chained_enambled = $_POST['sample_chained_enambled'];
         if (empty($sample_chained_enambled)) {
@@ -382,7 +382,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
 		public function product_sample_button() {
 			global $post, $product;
-			$is_sample = get_post_meta($post->ID, 'sample_enamble');
+			$is_sample = get_post_meta($post->ID, 'sample_enable');
 			if ($is_sample){
 			?>
 				<?php do_action('woocommerce_before_add_sample_to_cart_form'); ?>

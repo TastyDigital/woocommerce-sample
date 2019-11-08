@@ -1,9 +1,9 @@
 === WooCommerce Sample ===
-Contributors: isikom, zauker
+Contributors: twobyte, isikom, zauker
 Tags: ecommerce, e-commerce, commerce, woothemes, wordpress ecommerce, woocommerce, sample, free sample
 Requires at least: 3.5
 Tested up to: 4.6
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ Compatibility with plugins:
 
 = GET INVOLVED =
 
-Developers can checkout and contribute to the source code on the [GitHub Repository](https://github.com/isikom/woocommerce-sample).
+Developers can checkout and contribute to the source code on the [GitHub Repository](https://github.com/TastyDigital/woocommerce-sample), this has been forked from [isikom’s original repository](https://github.com/isikom/woocommerce-sample).
 
 == Installation ==
 
@@ -56,6 +56,9 @@ Make it enabled and set it available for coupon.
 4. remember to set Free Shipping available for coupon
 
 == Changelog ==
+
+= 0.9.0 - 08/10/2019 =
+* Fixed deprecated calls and methods
 
 = 0.8.0 - 05/08/2016 =
 * added support for WooCommerce Chained Products plugin
