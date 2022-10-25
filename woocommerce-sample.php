@@ -5,7 +5,7 @@
  * Description: Include Get Sample Button in products of your online store. This is a fork of an abandoned plugin
  * Author: Michele Menciassi / Tasty Digital
  * Author URI: https://tasty.digital
- * Version: 0.9.1
+ * Version: 0.9.2
  * License: GPLv2 or later
  */
  
@@ -38,7 +38,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 	        add_action('woocommerce_single_product_summary', array($this, 'product_sample_button'), 13);
             // add_action('woocommerce_after_add_to_cart_form', array($this, 'product_sample_button'));
 
-            add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+            add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'), 100);
 			//add_action('woocommerce_add_to_cart', $cart_item_key, $product_id, $quantity, $variation_id, $variation, $cart_item_data );
 
             add_action( 'woocommerce_check_cart_items', array( $this, 'check_cart_samples' ), 10, 1 );
@@ -88,7 +88,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 				add_action( 'wc_after_chained_add_to_cart', array( $this, 'remove_chained_products' ), 20, 6 ); 
 			}
 
-
+			add_filter( 'woocommerce_post_class', array( $this, 'filter_woocommerce_sample_post_class'), 10, 2 );
 
 		}
 
@@ -606,13 +606,27 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 			if ( ! is_admin() ) {
 				wp_enqueue_script('woocommerce-sample', $plugin_url . '/js/woocommerce-sample.js', array('jquery'), '1.0', true);
 			}
+			wp_enqueue_style('sample-styles', plugins_url('css/styles.css', __FILE__), [], false );
 			/*
 			if (is_admin() && ( $pagenow == 'post-new.php' || $pagenow == 'post.php' || $pagenow == 'edit.php' || 'edit-tags.php')) {
 				// for admin enqueue
 			}
 			*/
 		}
-	  
+
+			function filter_woocommerce_sample_post_class( $classes, $product ) {
+				// is_product() - Returns true on a single product page
+				// NOT single product page, so return
+				// if ( ! is_product() ) return $classes;
+				if ( ! $product->is_in_stock() ) return $classes;
+
+				$is_sample = get_post_meta($product->get_id(), 'sample_enable',true)==1;
+				if ($is_sample) {
+					// Add new class
+					$classes[] = 'has-samples-available';
+				}
+				return $classes;
+			}
       
     }//end of the class  
   }//end of the if, if the class exists

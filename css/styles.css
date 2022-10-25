@@ -1,0 +1,20 @@
+.type-product.has-samples-available .border-wrapper:before {
+    content:' Free Sample Available';
+    width:15.6rem;
+    height:5.4rem;
+    color:white;
+    font-size: 1.3rem;
+    line-height: 1.25;
+    position:absolute;
+    left:10px;
+    top:10px;
+    z-index: 200;
+    border-radius: 2.7rem;
+    padding:1.3rem 0 1.3rem 5.4rem;
+    font-weight: 700;
+    background-color: var(--wp--preset--color--secondary, #A14743);
+    background-image: url("../images/Sample.svg");
+    background-size: 3.3rem 3.3rem;
+    background-repeat: no-repeat;
+    background-position: 1.2rem .8rem;
+}
