@@ -3,7 +3,7 @@
 Contributors: twobyte, isikom, zauker  
 Tags: ecommerce, e-commerce, commerce, woothemes, wordpress ecommerce, woocommerce, sample, free sample  
 Requires at least: 3.5  
-Tested up to: 4.6  
+Tested up to: 6.2  
 Stable tag: 0.9.0  
 License: GPLv2  
 License URI: http://www.gnu.org/licenses/gpl-2.0.html  
@@ -28,9 +28,12 @@ Developers can checkout and contribute to the source code on the [GitHub Reposit
 
 ### Automatic installation
 
-Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t even need to leave your web browser. To do an automatic install of WooCommerce, log in to your WordPress admin panel, navigate to the Plugins menu and click Add New.
+Using composer and bedrock, ensure `{
+"type": "vcs",
+"url": "git@github.com:TastyDigital/woocommerce-sample.git"
+}` has been added to the repositories section, then: 
 
-In the search field type “WooCommerce Sample” and click Search Plugins. Once you’ve found our plugin you can view details about it such as the the point release, rating and description. Most importantly of course, you can install it by simply clicking Install Now. After clicking that link you will be asked if you’re sure you want to install the plugin. Click yes and WordPress will automatically complete the installation.
+`composer require tastydigital/woocommerce-sample`
 
 ### Manual installation
 
@@ -57,6 +60,9 @@ Make it enabled and set it available for coupon.
 4. remember to set Free Shipping available for coupon
 
 ## Changelog
+
+= 0.9.2 – 25/10/2022
+* New Sample available badge feature
 
 = 0.9.1 – 30/12/2019
 * Defaulting sample shipping and costs to free
