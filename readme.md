@@ -58,6 +58,9 @@ Make it enabled and set it available for coupon.
 
 ## Changelog
 
+= 0.9.1 – 30/12/2019
+* Defaulting sample shipping and costs to free
+
 = 0.9.0 - 08/10/2019 =
 * Original repository forked and fixed deprecated calls and methods
 
