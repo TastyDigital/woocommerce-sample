@@ -3,9 +3,9 @@
  * Plugin Name: WooCommerce Sample NWFC
  * Plugin URI: https://github.com/TastyDigital/woocommerce-sample
  * Description: Include Get Sample Button in products of your online store. This is a fork of an abandoned plugin
- * Author: Michele Menciassi
- * Author URI: https://plus.google.com/+MicheleMenciassi
- * Version: 0.9.0
+ * Author: Michele Menciassi / Tasty Digital
+ * Author URI: https://tasty.digital
+ * Version: 0.9.1
  * License: GPLv2 or later
  */
  
