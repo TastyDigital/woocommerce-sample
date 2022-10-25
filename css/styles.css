@@ -1,3 +1,5 @@
+/* based on 1rem = 10px */
+
 .type-product.has-samples-available .border-wrapper:before {
     content:' Free Sample Available';
     width:15.6rem;
@@ -6,8 +8,8 @@
     font-size: 1.3rem;
     line-height: 1.25;
     position:absolute;
-    left:10px;
-    top:10px;
+    left:1rem;
+    top:1rem;
     z-index: 200;
     border-radius: 2.7rem;
     padding:1.3rem 0 1.3rem 5.4rem;
