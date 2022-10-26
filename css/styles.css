@@ -20,3 +20,9 @@
     background-repeat: no-repeat;
     background-position: 1.2rem .8rem;
 }
+/* hide if product on sale – too many labels! */
+
+.type-product.has-samples-available.sale .border-wrapper:before {
+    content: none;
+    display: none;
+}
