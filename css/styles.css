@@ -1,6 +1,6 @@
 /* based on 1rem = 10px */
 
-.type-product.has-samples-available .border-wrapper:before {
+.type-product.has-samples-available > a > .feature-box-item > .border-wrapper:before {
     content:' Free Sample Available';
     width:15.6rem;
     height:5.4rem;
@@ -22,7 +22,7 @@
 }
 /* hide if product on sale – too many labels! */
 
-.type-product.has-samples-available.sale .border-wrapper:before {
+.type-product.has-samples-available.sale > a > .feature-box-item > .border-wrapper:before {
     content: none;
     display: none;
 }
