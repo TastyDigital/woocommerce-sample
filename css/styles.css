@@ -1,28 +1,36 @@
 /* based on 1rem = 10px */
 
-.type-product.has-samples-available > a > .feature-box-item > .border-wrapper:before {
-    content:' Free Sample Available';
-    width:15.6rem;
-    height:5.4rem;
+.type-product.has-samples-available > a > .feature-box-item > .border-wrapper::before {
+    content:'Free Sample \A Available';
+    overflow: hidden;
+    width: 5.4rem;
+    height: 5.4rem;
     color:white;
     font-size: 1.3rem;
     line-height: 1.25;
     position:absolute;
     left:1rem;
     top:1rem;
-    z-index: 200;
+    z-index: 18;
     border-radius: 2.7rem;
     padding:1.3rem 0 1.3rem 5.4rem;
-    font-weight: 700;
-    background-color: var(--wp--preset--color--secondary, #A14743);
+    font-weight: 600;
+    background-color: #323232;
     background-image: url("../images/Sample.svg");
     background-size: 3.3rem 3.3rem;
     background-repeat: no-repeat;
     background-position: 1.2rem .8rem;
+    transition: width .2s;
+    white-space: pre;
+    display: block;
+}
+
+.type-product.has-samples-available > a > .feature-box-item:hover .border-wrapper::before {
+    width:15.6rem;
 }
 /* hide if product on sale – too many labels! */
 
-.type-product.has-samples-available.sale > a > .feature-box-item > .border-wrapper:before {
+.type-product.has-samples-available.sale > a > .feature-box-item > .border-wrapper::before {
     content: none;
     display: none;
 }
