@@ -5,7 +5,7 @@
  * Description: Include Get Sample Button in products of your online store. This is a fork of an abandoned plugin
  * Author: Michele Menciassi / Tasty Digital
  * Author URI: https://tasty.digital
- * Version: 0.9.2
+ * Version: 1.0.0.beta
  * License: GPLv2 or later
  */
  
@@ -34,8 +34,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 	        add_action('woocommerce_product_data_panels', array($this, 'product_write_panel'));
 	        add_action('woocommerce_process_product_meta', array($this, 'product_save_data'), 10, 2);
 	        // frontend stuff
-            // Do we have this connected to Add to cart form? Makes it dependant on product being In Stock...
-	        add_action('woocommerce_single_product_summary', array($this, 'product_sample_button'), 13);
+            // Do we have this connected to Add to cart form? Makes it dependant on product being In Stock...       
+            // add_action('woocommerce_single_product_summary', array($this, 'product_sample_button'), 13);
+            // Oct 2025 – moving sample to small link after summary
+            add_action('woocommerce_after_single_product_summary', array($this, 'product_sample_button'), 9);
             // add_action('woocommerce_after_add_to_cart_form', array($this, 'product_sample_button'));
 
             add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'), 100);
