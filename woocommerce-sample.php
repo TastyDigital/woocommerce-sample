@@ -50,6 +50,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
 			// Prevent add to cart
 			add_filter('woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 40, 4 );
+			add_filter('woocommerce_product_is_in_stock', array( $this, 'sample_purchase_stock_override' ), 10, 2);
+			add_filter('woocommerce_product_backorders_allowed', array( $this, 'sample_purchase_backorder_override' ), 10, 3);
 			add_filter('woocommerce_add_cart_item_data', array( $this, 'add_sample_to_cart_item_data' ), 10, 3 );
 			add_filter('woocommerce_add_cart_item', array( $this, 'add_sample_to_cart_item' ), 10, 2 );
 			add_filter('woocommerce_get_item_data', array( $this, 'get_item_data' ), 10, 2 );
@@ -580,11 +582,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 		public function product_sample_button() {
 			global $post, $product;
 
-            if ( ! $product->is_in_stock() ) {
-                // no samples available
-                return;
-            }
-
 			$is_sample = get_post_meta($post->ID, 'sample_enable',true)==1;
 			if ($is_sample){
 			?>
@@ -601,7 +598,45 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 			<?php
 			}
 		}
-	  
+
+		/*
+		 * Samples stay orderable when sellable stock is exhausted. Stock checks
+		 * pass for a product only while it is being added as a sample, or while
+		 * it sits in the cart as a sample.
+		 */
+		public function is_sample_purchase_context($product_id) {
+			if (get_post_meta($product_id, 'sample_enable', true) != 1) {
+				return false;
+			}
+			$requested_id = isset($_REQUEST['add-to-cart']) ? (int) $_REQUEST['add-to-cart'] : 0;
+			if ($requested_id === (int) $product_id) {
+				// The in-flight add decides: sample add passes, real purchase does not.
+				return !empty($_REQUEST['sample']);
+			}
+			if (function_exists('WC') && !empty(WC()->cart)) {
+				foreach (WC()->cart->get_cart() as $cart_item) {
+					if (!empty($cart_item['sample']) && (int) $cart_item['product_id'] === (int) $product_id) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		public function sample_purchase_stock_override($is_in_stock, $product) {
+			if (!$is_in_stock && $this->is_sample_purchase_context($product->get_id())) {
+				return true;
+			}
+			return $is_in_stock;
+		}
+
+		public function sample_purchase_backorder_override($allowed, $product_id, $product) {
+			if (!$allowed && $this->is_sample_purchase_context($product_id)) {
+				return true;
+			}
+			return $allowed;
+		}
+
 		function enqueue_scripts() {
 			global $pagenow, $wp_scripts;
 			$plugin_url = untrailingslashit(plugin_dir_url(__FILE__));
@@ -620,7 +655,6 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 				// is_product() - Returns true on a single product page
 				// NOT single product page, so return
 				// if ( ! is_product() ) return $classes;
-				if ( ! $product->is_in_stock() ) return $classes;
 
 				$is_sample = get_post_meta($product->get_id(), 'sample_enable',true)==1;
 				if ($is_sample) {
