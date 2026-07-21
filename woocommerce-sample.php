@@ -413,6 +413,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
        */
       function add_to_cart_validation( $pass, $product_id, $quantity, $variation_id = 0 ) {
 
+        if ( !empty($_REQUEST['sample']) && $quantity > 1 ) {
+            wc_add_notice(__('Samples are limited to one per product.', 'woosample'), 'error');
+            return false;
+        }
 
         // se ci sono articoli nel carrello eseguiamo i controlli altrimenti se il carrello è vuoto aggiungiamo l'elemento senza controlli ulteriori
         if ( sizeof( WC()->cart->get_cart() ) > 0 ) {
