@@ -382,6 +382,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 foreach ( WC()->cart->cart_contents as $cart_item ) {
                     if(!empty($cart_item['sample']) && $cart_item['sample'] == 1){
                         $total++;
+                        if($cart_item['quantity'] > 1){
+                            wc_add_notice(__('Samples are limited to one per product.', 'woosample'), 'error');
+                            return false;
+                        }
                     }else if ( defined('ALLOW_PURCHASE') && !ALLOW_PURCHASE ) {
                         wc_add_notice(__('Non-sample orders are not currently supported on this website.', 'woosample'), 'error');
                         return false;
