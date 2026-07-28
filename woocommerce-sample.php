@@ -5,7 +5,7 @@
  * Description: Include Get Sample Button in products of your online store. This is a fork of an abandoned plugin
  * Author: Michele Menciassi / Tasty Digital
  * Author URI: https://tasty.digital
- * Version: 1.0.0.beta
+ * Version: 1.0.0
  * License: GPLv2 or later
  */
  
@@ -52,6 +52,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 			add_filter('woocommerce_add_to_cart_validation', array( $this, 'add_to_cart_validation' ), 40, 4 );
 			add_filter('woocommerce_product_is_in_stock', array( $this, 'sample_purchase_stock_override' ), 10, 2);
 			add_filter('woocommerce_product_backorders_allowed', array( $this, 'sample_purchase_backorder_override' ), 10, 3);
+			add_filter('woocommerce_can_reduce_order_stock', array( $this, 'skip_stock_reduction_for_sample_only_orders' ), 10, 2);
+			add_filter('woocommerce_order_item_quantity', array( $this, 'sample_item_stock_quantity' ), 10, 3);
 			add_filter('woocommerce_add_cart_item_data', array( $this, 'add_sample_to_cart_item_data' ), 10, 3 );
 			add_filter('woocommerce_add_cart_item', array( $this, 'add_sample_to_cart_item' ), 10, 2 );
 			add_filter('woocommerce_get_item_data', array( $this, 'get_item_data' ), 10, 2 );
@@ -643,6 +645,35 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 				return true;
 			}
 			return $allowed;
+		}
+
+		/*
+		 * Samples never consume sellable stock. An order containing only
+		 * samples skips stock reduction entirely, so no stock notes or
+		 * no-stock/backorder notifications fire; in a mixed order the sample
+		 * lines reduce by zero while the real lines behave as normal.
+		 */
+		public function skip_stock_reduction_for_sample_only_orders($can_reduce, $order) {
+			if (!$can_reduce) {
+				return $can_reduce;
+			}
+			$items = $order->get_items();
+			if (empty($items)) {
+				return $can_reduce;
+			}
+			foreach ($items as $item) {
+				if (!$item->get_meta('Sample')) {
+					return $can_reduce;
+				}
+			}
+			return false;
+		}
+
+		public function sample_item_stock_quantity($quantity, $order, $item) {
+			if ($item->get_meta('Sample')) {
+				return 0;
+			}
+			return $quantity;
 		}
 
 		function enqueue_scripts() {
